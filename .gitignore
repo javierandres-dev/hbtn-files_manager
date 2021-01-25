@@ -1,0 +1,6 @@
+redis-6.0.10.tar.gz
+redis-6.0.10/
+node_modules/
+package-lock.json
+.vscode
+.DS_Store
