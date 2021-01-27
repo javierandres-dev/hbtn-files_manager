@@ -17,8 +17,4 @@ export default function Routes(app) {
   router.post('/users', (req, res) => {
     UsersController.postNew(req, res);
   });
-
-  router.get('/users/me', (req, res) => {
-    UsersController.getMe(req, res);
-  });
 }
