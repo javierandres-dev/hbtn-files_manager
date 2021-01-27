@@ -12,7 +12,7 @@ export default class UsersController {
     if (emailExists) return response.status(400).send({ error: 'Already exist' });
 
     const sha1Password = sha1(password);
-    const result = await dbClient.usersnsertOne({
+    const result = await dbClient.user.insertOne({
       email,
       password: sha1Password,
     });
