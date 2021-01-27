@@ -8,8 +8,8 @@ export default class UsersController {
     if (!email) return response.status(400).send({ error: 'Missing email' });
     if (!password) return response.status(400).send({ error: 'Missing password' });
 
-    const emailExists = await dbClient.users.findOne({ email });
-    if (emailExists) return response.status(400).send({ error: 'Already exist' });
+    const checkEmail = await dbClient.users.findOne({ email });
+    if (checkEmail) return response.status(400).send({ error: 'Already exist' });
 
     const sha1Password = sha1(password);
     const result = await dbClient.user.insertOne({
