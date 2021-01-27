@@ -1,8 +1,7 @@
 import redisClient from '../utils/redis';
 import dbClient from '../utils/db';
 
-class AppController {
-
+export default class AppController {
   static getStatus(request, response) {
     const status = {
       redis: redisClient.isAlive(),
@@ -19,4 +18,3 @@ class AppController {
     response.status(200).send(stats);
   }
 }
-export default AppController;
