@@ -1,7 +1,7 @@
 import express from 'express';
 import AppController from '../controllers/AppController';
 
-function controllerRouting(app) {
+export default function Routes(app) {
   const router = express.Router();
   app.use('/', router);
 
@@ -13,5 +13,3 @@ function controllerRouting(app) {
     AppController.getStats(req, res);
   });
 }
-
-export default controllerRouting;
