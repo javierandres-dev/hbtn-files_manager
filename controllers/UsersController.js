@@ -1,4 +1,4 @@
-mport { ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import sha1 from 'sha1';
 import dbClient from '../utils/db';
 
@@ -12,7 +12,7 @@ export default class UsersController {
     if (emailExists) return response.status(400).send({ error: 'Already exist' });
 
     const sha1Password = sha1(password);
-    const result = await dbClient.usersCollection.insertOne({
+    const result = await dbClient.usersnsertOne({
       email,
       password: sha1Password,
     });
@@ -20,9 +20,6 @@ export default class UsersController {
       id: result.insertedId,
       email,
     };
-    await userQueue.add({
-      userId: result.insertedId.toString(),
-    });
     return response.status(201).send(user);
   }
 }
