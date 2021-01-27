@@ -20,7 +20,7 @@ class UsersController {
 
     const sha1Password = sha1(password);
 
-    const result = await dbClient.usersCollection.insertOne({
+    const result = await dbClient.users.insertOne({
       email,
       password: sha1Password,
     });
