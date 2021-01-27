@@ -39,9 +39,9 @@ The objective is to build a simple platform to upload and view files:
 * A ```README.md``` file.
 
 ## Tasks
-* [ ] 0. Redis utils
-* [ ] 1. MongoDB utils
-* [ ] 2. First API
+* [x] 0. Redis utils
+* [x] 1. MongoDB utils
+* [x] 2. First API
 * [ ] 3. Create a new user
 * [ ] 4. Authenticate a user
 * [ ] 5. First file
