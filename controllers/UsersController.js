@@ -1,25 +1,59 @@
+/* eslint-disable */
 import { ObjectId } from 'mongodb';
-import sha1 from 'sha1';
 import dbClient from '../utils/db';
+import redisClient from '../utils/redis';
 
-export default class UsersController {
-  static async postNew(request, response) {
-    const { email, password } = request.body;
-    if (!email) return response.status(400).send({ error: 'Missing email' });
-    if (!password) return response.status(400).send({ error: 'Missing password' });
+const sha1 = require('sha1');
 
-    const checkEmail = await dbClient.users.findOne({ email });
-    if (checkEmail) return response.status(400).send({ error: 'Already exist' });
+// POST /users should create a new user in DB
+export async function postNew(req, res) {
 
-    const sha1Password = sha1(password);
-    const result = await dbClient.user.insertOne({
-      email,
-      password: sha1Password,
-    });
-    const user = {
-      id: result.insertedId,
-      email,
+  try {
+    const userEmail = req.body.email;
+    if (!userEmail) {
+      return res.status(400).send({
+        error: 'Missing email',
+      });
+    }
+
+    const userPassword = req.body.password;
+    if (!userPassword) {
+      return res.status(400).send({
+        error: 'Missing password',
+      });
+    }
+    
+    let existingEmail = await dbClient.db.collection('users').findOne({ email: userEmail });
+    if (existingEmail) {
+      return res.status(400).send({
+        error: 'Already exist',
+      });
+    }
+
+    let userId;
+    const hashedPw = sha1(userPassword);
+    const newUser = {
+      email: userEmail,
+      password: hashedPw,
     };
-    return response.status(201).send(user);
+
+    try {
+      await dbClient.db.collection('users').insertOne(newUser, (err) => {
+        userId = newUser._id;
+        return res.status(201).send({
+          email: userEmail,
+          id: userId,
+        });
+      });
+    } catch (err) {
+      return res.status(err.status).send({
+        'error': err,
+      });
+    }
+
+  } catch (error) {
+    return res.status(500).send({
+      error: 'Server error',
+    });
   }
 }
